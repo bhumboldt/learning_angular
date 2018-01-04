@@ -6,6 +6,10 @@ import { Component } from '@angular/core';
 })
 export class ProductListComponent {
     title = 'Product List';
+    imageWidth = 50;
+    imageMargin = 2;
+    showImage = false;
+    listFilter = 'cart';
     products: any[] = [
         {
             'productID': 1,
@@ -15,7 +19,7 @@ export class ProductListComponent {
             'releaseDate': 'Now',
             'price': 19.99,
             'starRating': 1.5,
-            'imageUrl': '#'
+            'imageUrl': '../../assets/testimg.jpg'
         },
         {
             'productID': 2,
@@ -25,7 +29,11 @@ export class ProductListComponent {
             'releaseDate': 'Never',
             'price': 33.33,
             'starRating': 4.8,
-            'imageUrl': '#'
+            'imageUrl': '../../assets/testimg.jpg'
         }
     ];
+
+    showImageHandle(): void {
+        this.showImage = !this.showImage;
+    }
 }
