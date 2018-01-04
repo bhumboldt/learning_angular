@@ -1,20 +1,31 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { IProduct } from './products';
 
 @Component({
     selector: 'app-products',
-    templateUrl: './product-list.component.html'
+    templateUrl: './product-list.component.html',
+    styleUrls: ['./product-list.component.css']
 })
-export class ProductListComponent {
+export class ProductListComponent implements OnInit {
     title = 'Product List';
     imageWidth = 50;
     imageMargin = 2;
     showImage = false;
-    listFilter = 'cart';
-    products: any[] = [
+    _listFilter: string;
+    get listFilter(): string {
+        return this._listFilter;
+    }
+    set listFilter(value: string) {
+        this._listFilter = value;
+        this.filteredProducts = this.listFilter ? this.performFilter(this.listFilter) : this.products;
+    }
+
+    filteredProducts: IProduct[];
+    products: IProduct[] = [
         {
             'productID': 1,
             'productName': 'Test Product 1',
-            'productCode': 'ABCDEFG',
+            'productCode': 'ABC-DEFG',
             'description': 'Some Test Product',
             'releaseDate': 'Now',
             'price': 19.99,
@@ -24,7 +35,7 @@ export class ProductListComponent {
         {
             'productID': 2,
             'productName': 'Test Product 2',
-            'productCode': 'BCDAKKDL',
+            'productCode': 'BCDA-KKDL',
             'description': 'Another Test Product',
             'releaseDate': 'Never',
             'price': 33.33,
@@ -33,7 +44,21 @@ export class ProductListComponent {
         }
     ];
 
+    constructor() {
+        this.filteredProducts = this.products;
+        this.listFilter = 'test';
+    }
+
+    performFilter(filterBy: string): IProduct[] {
+        filterBy = filterBy.toLocaleLowerCase();
+        return this.products.filter((product: IProduct) => product.productName.toLocaleLowerCase().indexOf(filterBy) !== -1);
+    }
+
     showImageHandle(): void {
         this.showImage = !this.showImage;
+    }
+
+    ngOnInit(): void {
+        console.log('Implemented');
     }
 }
