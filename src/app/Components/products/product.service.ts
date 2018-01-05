@@ -1,30 +1,21 @@
 import { Injectable } from '@angular/core';
 import { IProduct } from './products';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http/';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/observable/throw';
 
 @Injectable()
 export class ProductService {
-    getProducts(): IProduct[] {
-        return [
-            {
-                'productID': 1,
-                'productName': 'Test Product 1',
-                'productCode': 'ABC-DEFG',
-                'description': 'Some Test Product',
-                'releaseDate': 'Now',
-                'price': 19.99,
-                'starRating': 1.5,
-                'imageUrl': '../../assets/testimg.jpg'
-            },
-            {
-                'productID': 2,
-                'productName': 'Test Product 2',
-                'productCode': 'BCDA-KKDL',
-                'description': 'Another Test Product',
-                'releaseDate': 'Never',
-                'price': 33.33,
-                'starRating': 4.8,
-                'imageUrl': '../../assets/testimg.jpg'
-            }
-        ];
+    private _Url = '../../assets/products.json';
+    constructor(private _httpClient: HttpClient) {}
+
+    getProducts(): Observable<IProduct[]> {
+        return this._httpClient.get<IProduct[]>(this._Url).catch(this.handleError);
+    }
+
+    private handleError(error: HttpErrorResponse) {
+        console.log(error.message);
+        return Observable.throw(error.message);
     }
 }
