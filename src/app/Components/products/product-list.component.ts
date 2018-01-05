@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { IProduct } from './products';
+import { ProductService } from './product.service';
 
 @Component({
     selector: 'app-products',
@@ -21,32 +22,8 @@ export class ProductListComponent implements OnInit {
     }
 
     filteredProducts: IProduct[];
-    products: IProduct[] = [
-        {
-            'productID': 1,
-            'productName': 'Test Product 1',
-            'productCode': 'ABC-DEFG',
-            'description': 'Some Test Product',
-            'releaseDate': 'Now',
-            'price': 19.99,
-            'starRating': 1.5,
-            'imageUrl': '../../assets/testimg.jpg'
-        },
-        {
-            'productID': 2,
-            'productName': 'Test Product 2',
-            'productCode': 'BCDA-KKDL',
-            'description': 'Another Test Product',
-            'releaseDate': 'Never',
-            'price': 33.33,
-            'starRating': 4.8,
-            'imageUrl': '../../assets/testimg.jpg'
-        }
-    ];
-
-    constructor() {
-        this.filteredProducts = this.products;
-        this.listFilter = 'test';
+    products: IProduct[];
+    constructor(private _productService: ProductService) {
     }
 
     onNotify(message: string): void {
@@ -63,6 +40,7 @@ export class ProductListComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        console.log('Implemented');
+        this.products = this._productService.getProducts();
+        this.filteredProducts = this.products;
     }
 }
